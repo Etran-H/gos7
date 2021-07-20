@@ -21,7 +21,7 @@ const (
 	tcpIdleTimeout = 60 * time.Second
 	tcpMaxLength   = 2084
 	//messages
-	pduSizeRequested = 480
+	pduSizeRequested = 960
 	isoTCP           = 102 //default isotcp port
 	isoHSize         = 7   // TPKT+COTP Header Size
 	minPduSize       = 16
