@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"../../gos7"
+	"gos7"
 )
 
 //ClientTestAll client test all
@@ -113,7 +113,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 	data1 := make([]byte, 1024)
 	data2 := make([]byte, 1024)
 	data3 := make([]byte, 1024)
-	var error1, error2, error3 string
+	var error1, error2, error3 error
 
 	var items = []gos7.S7DataItem{
 		gos7.S7DataItem{
@@ -123,7 +123,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data1,
-			Error:    error1,
+			Error:    &error1,
 		},
 		gos7.S7DataItem{
 			Area:     0x84,
@@ -132,7 +132,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data2,
-			Error:    error2,
+			Error:    &error2,
 		},
 		gos7.S7DataItem{
 			Area:     0x84,
@@ -141,7 +141,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data3,
-			Error:    error3,
+			Error:    &error3,
 		},
 	}
 	err := client.AGReadMulti(items, 3)
@@ -167,7 +167,7 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 		data1[i] = 0x01
 		data2[i] = 0x02
 	}
-	var error1, error2, error3 string
+	var error1, error2, error3 error
 
 	var items = []gos7.S7DataItem{
 		gos7.S7DataItem{
@@ -177,7 +177,7 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data1,
-			Error:    error1,
+			Error:    &error1,
 		},
 		gos7.S7DataItem{
 			Area:     0x84,
@@ -186,7 +186,7 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data2,
-			Error:    error2,
+			Error:    &error2,
 		},
 		gos7.S7DataItem{
 			Area:     0x84,
@@ -195,15 +195,15 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 			Start:    0,
 			Amount:   16,
 			Data:     data3,
-			Error:    error3,
+			Error:    &error3,
 		},
 	}
 	err := client.AGWriteMulti(items, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if error1 != "" || error2 != "" || error3 != "" {
-		t.Fatal(error1 + error2 + error3)
+	if error1 != nil || error2 != nil || error3 != nil {
+		t.Fatal(error1, error2, error3)
 	}
 	//value1 := binary.BigEndian.Uint16(data1[8:])
 	AssertEquals(t, "", error1)
